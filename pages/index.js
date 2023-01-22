@@ -1,14 +1,12 @@
 import Head from 'next/head'
-const url = "http://localhost:3000/data.json"
 
-export async function getServerSideProps(context) {
+const url = "http://localhost:3000/data.json" // ☆
+
+export async function getStaticProps(context) {
   const result = await fetch(url)
   const data = await result.json()
-  const n = context.query.id == undefined ? 0 
-    : context.query.id >= data.length ? 0 
-    : context.query.id
   return {
-    props:data[n]
+    props:{data:data}
   }
 }
 
@@ -21,11 +19,15 @@ export default function Home(props) {
       <main className="container">
         <h2>Index page.</h2>
         <div className="alert alert-primary my-3">
-          <p className="h5">msg: {props.message}</p>
-          <p className="h6">by {props.name}. ({props.email})</p>
+          <ol>
+          {props.data.map(value=>
+            <li className="my-2 h6" key={value.name}>
+              {value.message} ({value.name} [{value.email}])
+            </li>
+          )}
+          </ol>
         </div>
       </main>
     </div>
   )
 }
-
