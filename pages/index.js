@@ -1,16 +1,21 @@
 import Head from 'next/head'
+import { useState, useEffect } from 'react'
 
-const url = "http://localhost:3000/data.json" // ☆
-
-export async function getStaticProps(context) {
-  const result = await fetch(url)
-  const data = await result.json()
-  return {
-    props:{data:data}
-  }
-}
+const url = "http://localhost:3000/data.json" //☆
 
 export default function Home(props) {
+  const [data,setData] = useState(<tr><td>no data.</td></tr>)
+  useEffect(()=> {
+    fetch(url).then(res=>res.json()).then(res=>{
+      setData(res.map(value=>
+        <tr className="my-2 h6" key={value.name}>
+          <td>{value.message}</td>
+          <td>{value.name}</td>
+          <td>{value.email}</td>
+        </tr>)
+      )   
+    })
+  },[])
   return (
     <div>
       <Head>
@@ -19,13 +24,14 @@ export default function Home(props) {
       <main className="container">
         <h2>Index page.</h2>
         <div className="alert alert-primary my-3">
-          <ol>
-          {props.data.map(value=>
-            <li className="my-2 h6" key={value.name}>
-              {value.message} ({value.name} [{value.email}])
-            </li>
-          )}
-          </ol>
+          <table className="table">
+            <thead><tr>
+              <th>Message</th>
+              <th>Name</th>
+              <th>Email</th>
+            </tr></thead>
+            <tbody>{data}</tbody>
+          </table>
         </div>
       </main>
     </div>
