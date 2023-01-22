@@ -3,37 +3,14 @@ import { useState, useEffect } from 'react'
 
 const url = "http://localhost:3000/data.json" //☆
 
-export default function Home(props) {
-  const [data,setData] = useState(<tr><td>no data.</td></tr>)
-  useEffect(()=> {
-    fetch(url).then(res=>res.json()).then(res=>{
-      setData(res.map(value=>
-        <tr className="my-2 h6" key={value.name}>
-          <td>{value.message}</td>
-          <td>{value.name}</td>
-          <td>{value.email}</td>
-        </tr>)
-      )   
-    })
-  },[])
+export default function Home(props) {g
   return (
-    <div>
-      <Head>
-        <title>My Sample App</title>
-      </Head>
-      <main className="container">
-        <h2>Index page.</h2>
-        <div className="alert alert-primary my-3">
-          <table className="table">
-            <thead><tr>
-              <th>Message</th>
-              <th>Name</th>
-              <th>Email</th>
-            </tr></thead>
-            <tbody>{data}</tbody>
-          </table>
-        </div>
-      </main>
-    </div>
+    <main className="container">
+      <h2 className="my-4">Index page.</h2>
+      <div className="alert alert-primary">
+        <p className="h6">This is {props.appname}. by {props.author}</p>
+      </div>
+    </main>
   )
 }
+
