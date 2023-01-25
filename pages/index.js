@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react'
 import useSWR from 'swr'
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json())
+const opts = {
+  method: 'POST',
+  cache: 'no-cache',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+}
+const fetcher = (...args) => fetch(args[0],opts).then((res) => res.json())
 
 export default function Home(props) {
   const [path, setPath] = useState('/api/hello')

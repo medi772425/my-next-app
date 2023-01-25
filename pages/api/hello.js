@@ -7,7 +7,16 @@ const data = [
 ]
 
 export default function handler(req, res) {
-  const id = req.query.id ? +req.query.id : 0
-  const result = data[id] ? data[id] : data[0]
-  res.status(200).json({id:id, data:result})
+  if (req.method == 'GET') {
+    res.status(200).send('Cannot access this api.')
+    return
+  }
+  if (req.method == 'POST') {
+    const id = req.query.id ? +req.query.id : 0
+    const result = data[id] ? data[id] : data[0]
+    res.status(200).json({id:id, data:result})
+    return
+  }
+  // 必要なだけHTTPメソッド処理を用意
 }
+
