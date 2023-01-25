@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react'
+import useSWR from 'swr'
+
+const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
 export default function Home(props) {
-  const [selected, setSelected] = useState("0")
-  const [data, setData] = useState({id:0,data:{name:'-',email:'-',tel:'-'}})
-  const doAction = (e)=> setSelected(e.target.value)
+  const [path, setPath] = useState('/api/hello')
+  const {data} = useSWR(path, fetcher)
 
-  useEffect(()=>{
-    fetch(`/api/hello?id=${selected}`)
-      .then(res=>res.json())
-      .then(res=>setData(res))
-  },[selected])
+  const doAction = (e)=> {
+    setPath(`/api/hello?id=${e.target.value}`)
+  }
 
   return (
     <main className="container">
